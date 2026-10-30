@@ -7,10 +7,12 @@ create table if not exists public.posts (
   name text not null default '匿名同學' check (char_length(name) between 1 and 30),
   message text not null default '' check (char_length(message) <= 300),
   photo text,                       -- photos bucket 內的檔名，可為空（純留言）
+  thumb text,                       -- 縮圖檔名（縮圖列使用，節省流量）
   created_at timestamptz not null default now(),
   check (photo is not null or char_length(message) > 0)
 );
 
+alter table public.posts add column if not exists thumb text;
 alter table public.posts enable row level security;
 
 -- 任何訪客可讀取、可新增；不可修改或刪除（刪除請由管理者在 Table Editor 操作）

@@ -22,11 +22,10 @@
   const messages = () => S.posts.filter(p => p.message);
   const current = () => S.selected || photos()[S.index % Math.max(photos().length, 1)] || null;
 
+  const publicUrl = path => path ? db.storage.from(BUCKET).getPublicUrl(path).data.publicUrl : null;
   function normalize(row) {
-    let url = null;
-    if (row.photo_url) url = row.photo_url;
-    else if (row.photo) url = db.storage.from(BUCKET).getPublicUrl(row.photo).data.publicUrl;
-    return { id: row.id, name: row.name || '匿名同學', message: row.message || '', photo_url: url, created: new Date(row.created_at || Date.now()).getTime() };
+    const url = publicUrl(row.photo);
+    return { id: row.id, name: row.name || '匿名同學', message: row.message || '', photo_url: url, thumb_url: publicUrl(row.thumb) || url, created: new Date(row.created_at || Date.now()).getTime() };
   }
 
   // ---------- data ----------
@@ -129,7 +128,7 @@
       b.dataset.id = p.id;
       b.setAttribute('aria-label', '觀看 ' + p.name + ' 的照片');
       const im = document.createElement('img');
-      im.src = p.photo_url; im.alt = p.name; im.loading = 'lazy';
+      im.src = p.thumb_url || p.photo_url; im.alt = p.name; im.loading = 'lazy';
       b.append(im);
       b.addEventListener('click', () => select(p));
       strip.append(b);
@@ -179,19 +178,23 @@
   }
 
   // ---------- upload ----------
+  // 主照片最長邊 1600px（約 200–400 KB），縮圖 320px（約 15–30 KB），以節省 Supabase 流量
   async function shrink(file) {
     try {
       const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
-      const ratio = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
-      const c = document.createElement('canvas');
-      c.width = Math.round(bmp.width * ratio); c.height = Math.round(bmp.height * ratio);
-      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+      const draw = async (max, q) => {
+        const ratio = Math.min(1, max / Math.max(bmp.width, bmp.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(bmp.width * ratio); c.height = Math.round(bmp.height * ratio);
+        c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+        return new Promise(r => c.toBlob(r, 'image/jpeg', q));
+      };
+      const full = await draw(1600, 0.8), thumb = await draw(320, 0.7);
       bmp.close && bmp.close();
-      const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.86));
-      if (blob) return blob;
+      if (full) return { full, thumb };
     } catch (_) { /* fall through */ }
     if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) throw Error('此照片格式無法讀取，請選 JPG 或 PNG');
-    return file;
+    return { full: file, thumb: null };
   }
 
   async function submit(e) {
@@ -206,21 +209,23 @@
     try {
       if (file && file.size > 25e6) throw Error('原始照片請小於 25 MB');
       const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2);
-      let blob = file ? await shrink(file) : null;
+      const img = file ? await shrink(file) : null, blob = img && img.full;
       if (DEMO) {
-        addPost({ id, name, message, photo_url: blob ? URL.createObjectURL(blob) : null, created: Date.now() }, true);
+        const url = blob ? URL.createObjectURL(blob) : null;
+        addPost({ id, name, message, photo_url: url, thumb_url: img && img.thumb ? URL.createObjectURL(img.thumb) : url, created: Date.now() }, true);
       } else {
-        let path = null;
+        let path = null, thumb = null;
+        const put = (p, b) => db.storage.from(BUCKET).upload(p, b, { contentType: b.type || 'image/jpeg', cacheControl: '31536000', upsert: false });
         if (blob) {
           const ext = blob.type === 'image/png' ? 'png' : blob.type === 'image/webp' ? 'webp' : 'jpg';
           path = `${id}.${ext}`;
-          const up = await db.storage.from(BUCKET).upload(path, blob, { contentType: blob.type || 'image/jpeg', upsert: false });
-          if (up.error) throw Error('照片上傳失敗，請再試一次');
+          if ((await put(path, blob)).error) throw Error('照片上傳失敗，請再試一次');
+          if (img.thumb && !(await put(`${id}_t.jpg`, img.thumb)).error) thumb = `${id}_t.jpg`;
         }
-        const row = { id, name, message, photo: path };
+        const row = { id, name, message, photo: path, thumb };
         const { error } = await db.from('posts').insert(row);
         if (error) {
-          if (path) await db.storage.from(BUCKET).remove([path]);
+          if (path) await db.storage.from(BUCKET).remove([path, thumb].filter(Boolean));
           throw Error('送出失敗，請稍後重試');
         }
         addPost(normalize({ ...row, created_at: new Date().toISOString() }), true);
