@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>畢業光影｜輔仁大學統計資訊學系暨碩士班</title>
+<meta name="description" content="把此刻留給未來。畢業照片與祝福即時牆。">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="extra.css">
+</head>
+<body>
+<main data-theme="0" id="app">
+ <div class="ambient" aria-hidden="true"><span></span><span></span><span></span></div>
+ <header>
+  <a class="brand" href="./"><span class="brandmark">輔</span><span>輔仁大學<span class="brand-sub">統計資訊學系暨碩士班</span></span></a>
+  <span class="header-note">THE MOMENTS WE SHARE</span>
+  <button class="outline" id="screenBtn"><svg class="ic"><use href="#i-max"/></svg><span>大螢幕模式</span></button>
+ </header>
+
+ <section class="intro">
+  <div>
+   <p class="eyebrow">OUR GRADUATION · OUR NEXT CHAPTER</p>
+   <h1>把此刻，<em>留給未來。</em><svg class="ic title-star"><use href="#i-spark"/></svg></h1>
+   <p class="subtitle">一張合照，一句祝福。讓我們的故事，在這裡繼續閃耀。</p>
+  </div>
+  <button class="primary" data-open-upload><svg class="ic"><use href="#i-cam"/></svg>留下我的畢業瞬間<svg class="ic"><use href="#i-arrow"/></svg></button>
+ </section>
+
+ <section class="wall">
+  <div class="gallery">
+   <div class="sectionline"><span><span class="live-dot" id="liveDot"></span><span id="liveText">連線中…</span></span><span id="photoCount">0 張共同回憶</span></div>
+   <div class="stage" id="stage">
+    <img class="main-photo hidden" id="mainPhoto" alt="">
+    <div class="empty-art" id="emptyArt">
+     <div class="orb"></div><span class="art-spark">✧</span><span class="art-small">✦</span>
+     <div class="cap">🎓</div>
+     <p class="art-label">THE BEST IS YET TO COME</p>
+     <h2>下一站，無限可能</h2>
+     <p>第一張畢業合照，等你來留下。</p>
+     <button class="outline" data-open-upload><svg class="ic"><use href="#i-img"/></svg>上傳第一張照片</button>
+    </div>
+    <div class="photo-caption hidden" id="caption"><span><b id="capName"></b><small id="capMsg"></small></span><span id="capInfo"></span></div>
+    <div class="stage-top"><span class="pill" id="pill">回憶放映中</span><button class="icon-button" id="pauseBtn" aria-label="暫停輪播"><svg class="ic"><use href="#i-pause"/></svg></button></div>
+    <div class="progress"><i id="bar"></i></div>
+   </div>
+   <div class="strip" id="strip"><p>你的每一張照片，都會成為這段青春的一部分。</p></div>
+  </div>
+
+  <aside>
+   <div class="sectionline"><span>WORDS FROM THE HEART</span><svg class="ic"><use href="#i-heart"/></svg></div>
+   <div class="message-card">
+    <span class="quote">“</span>
+    <div class="message-content" id="msgContent">
+     <p>願每一個認真做夢的你，<br>都能走向自己喜歡的未來。</p>
+     <span class="author"><span>輔</span><b>畢業祝福<small>寫下你的第一則留言</small></b></span>
+    </div>
+    <div class="message-bottom"><span id="msgCount">等待你的祝福</span><span id="msgDots">● ○ ○</span></div>
+   </div>
+   <div class="join-card">
+    <div class="join-symbol"><svg class="ic" style="width:26px;height:26px"><use href="#i-cam"/></svg><svg class="ic" style="width:15px;height:15px"><use href="#i-spark"/></svg></div>
+    <div><h3>讓這份回憶，多一個你。</h3><p>拍下笑容，也留下想說的話。</p></div>
+    <div class="qr" id="qr" aria-label="掃描 QR Code 參與"></div>
+    <button class="text-button" data-open-upload>照片與祝福上傳 <svg class="ic"><use href="#i-arrow"/></svg></button>
+    <button class="copy" id="copyBtn">複製參與連結，分享給同學</button>
+   </div>
+  </aside>
+ </section>
+
+ <footer>
+  <span>青春不散場，故事未完待續。<small>FU JEN CATHOLIC UNIVERSITY · STATISTICS &amp; INFORMATION SCIENCE</small></span>
+  <div class="theme-control" id="themeControl">
+   <span>此刻的氛圍</span>
+   <button data-theme-btn="0"><i></i>溫暖典雅</button>
+   <button data-theme-btn="1"><i></i>青春活潑</button>
+   <button data-theme-btn="2"><i></i>星空光影</button>
+   <button id="autoThemeBtn" class="chosen">↻ 自動輪替</button>
+  </div>
+ </footer>
+
+ <div class="toast hidden" role="status" id="toast"><span id="toastText"></span><button aria-label="關閉通知" id="toastClose">✕</button></div>
+
+ <div class="overlay hidden" id="overlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-label="留下畢業瞬間">
+   <button class="close" id="closeBtn" aria-label="關閉">✕</button>
+   <p class="eyebrow">A MOMENT TO REMEMBER</p>
+   <h2>留下你的畢業瞬間</h2>
+   <p>照片或留言擇一，也可以兩個都留下。</p>
+   <form id="form">
+    <label class="upload-box" id="uploadBox">
+     <img id="preview" class="hidden" alt="待上傳照片預覽">
+     <span id="uploadHint" class="upload-hint"><svg class="ic" style="width:28px;height:28px"><use href="#i-img"/></svg><b>點選拍照或選擇照片</b><span>JPG、PNG、WebP · 自動縮圖</span></span>
+     <input id="file" name="photo" type="file" accept="image/*">
+    </label>
+    <button type="button" class="copy hidden" id="removePhoto">移除照片</button>
+    <label>姓名／暱稱<input name="name" maxlength="30" placeholder="讓我們知道你是誰（可留白）"></label>
+    <label>想說的話<textarea name="message" maxlength="300" rows="3" placeholder="寫給同學、老師，或未來的自己…"></textarea></label>
+    <p class="consent">送出即同意照片與留言顯示於活動頁及現場螢幕。請確認照片中的人同意分享。</p>
+    <p class="error hidden" role="alert" id="error"></p>
+    <button class="primary submit" id="submitBtn"><span>送出這份回憶</span><svg class="ic"><use href="#i-arrow"/></svg></button>
+   </form>
+  </section>
+ </div>
+</main>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <symbol id="i-cam" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/></symbol>
+  <symbol id="i-max" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5v14M15 5v14"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></symbol>
+ </defs>
+</svg>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

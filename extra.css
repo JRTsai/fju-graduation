@@ -1,0 +1,15 @@
+.hidden{display:none!important}
+.ic{width:16px;height:16px;flex-shrink:0;vertical-align:middle}
+.title-star{width:25px;height:25px}
+.main-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0f171e;animation:reveal .9s}
+.progress i{animation:none;width:0}
+.upload-hint{display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+.pill.new{background:var(--accent);color:var(--bg)}
+.thumb.fresh{border-color:#d9a441;box-shadow:0 0 0 2px #d9a44155}
+.live-dot.off{background:#c9806f;box-shadow:0 0 0 4px #c9806f22}
+.qr{display:none}
+.qr img,.qr canvas{width:100%;height:auto;display:block}
+.screen .qr{display:block;width:100%;max-width:170px;margin:4px auto;padding:10px;background:#fff;border-radius:6px}
+.screen .qr:after{content:'掃描 QR Code 上傳照片與祝福';display:block;text-align:center;font-size:10px;color:#42524a;margin-top:6px;letter-spacing:1px}
+.demo-banner{position:relative;margin-top:12px;padding:10px 14px;border:1px dashed var(--accent);border-radius:6px;font-size:12px;color:var(--muted);background:var(--card)}
+.thumb{cursor:pointer}
