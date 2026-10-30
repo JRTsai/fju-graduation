@@ -314,6 +314,19 @@
     document.querySelector('.intro').after(note);
   }
 
+  // 隨風飄落的花瓣
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const box = $('petals'), n = innerWidth < 650 ? 10 : 18;
+    for (let i = 0; i < n; i++) {
+      const p = document.createElement('span');
+      p.className = 'petal';
+      const r = (a, b) => a + Math.random() * (b - a);
+      p.style.cssText = `left:${r(-10, 95)}%;--s:${r(8, 16)}px;--d:${r(14, 26)}s;--delay:${r(-26, 0)}s;--f:${r(1.2, 2.6)}s;--drift:${r(15, 40)}vw`;
+      p.append(document.createElement('i'));
+      box.append(p);
+    }
+  }
+
   setTheme(0);
   setConnected(DEMO);
   load().then(subscribe);

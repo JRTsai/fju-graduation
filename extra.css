@@ -13,3 +13,37 @@
 .screen .qr:after{content:'掃描 QR Code 上傳照片與祝福';display:block;text-align:center;font-size:10px;color:#42524a;margin-top:6px;letter-spacing:1px}
 .demo-banner{position:relative;margin-top:12px;padding:10px 14px;border:1px dashed var(--accent);border-radius:6px;font-size:12px;color:var(--muted);background:var(--card)}
 .thumb{cursor:pointer}
+
+/* ---------- 背景：隨風搖曳的花海 ---------- */
+body{background:#f7f3eb}
+main{background:transparent;--wash-top:#f7f3ebe0;--wash-mid:#f7f3eba6;--wash-bot:#f7f3ebbf;--halo:#f7f3eb}
+main[data-theme="1"]{--wash-top:#f3f3e6dc;--wash-mid:#f3f3e69e;--wash-bot:#f3f3e6b8;--halo:#f3f3e6}
+main[data-theme="2"]{--halo:#101c2d}
+.subtitle,.sectionline,.eyebrow,.header-note,.brand-sub,footer small,.strip>p,.theme-control>span{text-shadow:0 0 6px var(--halo),0 0 12px var(--halo)}
+.subtitle,.sectionline{color:var(--ink)}
+main[data-theme="2"]{--wash-top:#101c2de6;--wash-mid:#101c2db8;--wash-bot:#101c2dd9}
+header,section,footer{z-index:1}
+.scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#9fb9d8}
+.scene-photo{position:absolute;inset:-6% -6% -3%;background:url(bg-flowers.webp) center 70%/cover no-repeat;transform-origin:50% 100%;animation:breeze 9s ease-in-out infinite alternate;will-change:transform}
+.scene:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--wash-top) 0%,var(--wash-mid) 45%,var(--wash-bot) 100%);transition:background 1.8s}
+.scene-light{position:absolute;inset:-20%;z-index:1;background:radial-gradient(ellipse 45% 35% at 70% 25%,#fff8dc55,transparent 70%);animation:glow 7s ease-in-out infinite alternate;mix-blend-mode:soft-light}
+.petals{position:absolute;inset:0;z-index:2}
+.petal{position:absolute;top:-6vh;width:var(--s);height:calc(var(--s)*.55);background:radial-gradient(ellipse at 30% 40%,#fffef4,#f4efc9 70%,#e9dc9a);border-radius:100% 0 100% 0;opacity:0;box-shadow:0 0 6px #fff8;animation:fall var(--d) linear var(--delay) infinite}
+.petal i{display:block;width:100%;height:100%;animation:flutter var(--f) ease-in-out infinite alternate}
+@keyframes breeze{
+  0%{transform:rotate(-.5deg) skewX(-1.2deg) translateX(-.6%) scale(1.02)}
+  50%{transform:rotate(.25deg) skewX(.6deg) translateX(.3%) scale(1.03)}
+  100%{transform:rotate(.6deg) skewX(1.4deg) translateX(.8%) scale(1.02)}
+}
+@keyframes glow{from{transform:translate(-3%,0);opacity:.6}to{transform:translate(4%,2%);opacity:1}}
+@keyframes fall{
+  0%{transform:translate(0,0) rotate(0);opacity:0}
+  10%{opacity:.9}
+  50%{transform:translate(calc(var(--drift)*.5),55vh) rotate(200deg)}
+  90%{opacity:.8}
+  100%{transform:translate(var(--drift),112vh) rotate(400deg);opacity:0}
+}
+@keyframes flutter{from{transform:rotateX(0) rotateY(0)}to{transform:rotateX(65deg) rotateY(35deg)}}
+.message-card{background:color-mix(in srgb,var(--card) 82%,transparent);backdrop-filter:blur(10px)}
+.join-card{background:color-mix(in srgb,var(--soft) 78%,transparent);backdrop-filter:blur(10px)}
+.stage{box-shadow:0 20px 50px #2a3a2a26}
