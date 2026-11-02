@@ -6,12 +6,12 @@
 <title>畢業光影｜輔仁大學統計資訊學系／碩士班／碩士專班</title>
 <meta name="description" content="把此刻留給未來。畢業照片與祝福即時牆。">
 <link rel="icon" href="sis-badge.webp" type="image/webp">
-<link rel="stylesheet" href="style.css?v=9">
-<link rel="stylesheet" href="extra.css?v=9">
-<link rel="stylesheet" href="themes.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="extra.css?v=10">
+<link rel="stylesheet" href="themes.css?v=10">
 </head>
 <body>
-<main data-theme="0" id="app">
+<main data-theme="5" id="app">
  <div class="scene" aria-hidden="true">
   <div class="scene-photo"></div>
   <div class="scene-ocean layer">
@@ -25,6 +25,7 @@
   </div>
   <div class="scene-night layer">
    <div class="stars" id="stars"></div>
+   <div class="zodiac" id="zodiac"><div class="zodiac-sway"><svg viewBox="0 0 100 100" id="zodiacSvg"></svg><p id="zodiacName"></p></div></div>
    <div class="moon"></div>
    <div class="shooting"></div>
    <div class="ridge night-hills"></div>
@@ -99,7 +100,7 @@
    <button data-theme-btn="3"><i></i>海洋</button>
    <button data-theme-btn="4"><i></i>山嵐</button>
    <button data-theme-btn="5"><i></i>夜幕</button>
-   <button id="autoThemeBtn" class="chosen">↻ 自動輪替</button>
+   <button id="autoThemeBtn">↻ 自動輪替</button>
    <button class="admin-link" id="adminLink" title="管理模式">🔒 管理</button>
   </div>
  </footer>
@@ -190,8 +191,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="config.js?v=9"></script>
-<script src="app.js?v=9"></script>
-<script src="admin.js?v=9"></script>
+<script src="config.js?v=10"></script>
+<script src="app.js?v=10"></script>
+<script src="admin.js?v=10"></script>
 </body>
 </html>

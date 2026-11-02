@@ -17,7 +17,7 @@
 
   const S = {
     posts: [], index: 0, mi: 0, selected: null, selectedIsNew: false,
-    paused: false, theme: 0, autoTheme: true, screen: false,
+    paused: false, theme: 5, autoTheme: false, screen: false,
     photoStart: Date.now(), msgStart: Date.now(), themeStart: Date.now(),
     lastActivity: Date.now(), pausedAt: 0, connected: false, stripKey: ''
   };
@@ -345,6 +345,51 @@
     }
   }
 
+  // 夜幕的十二星座：每 15 秒換一個，連線慢慢描出
+  const ZODIAC = [
+    ['♈', '牡羊座', 'Aries', [[18, 42], [52, 34], [68, 46], [74, 60]], [[0, 1], [1, 2], [2, 3]]],
+    ['♉', '金牛座', 'Taurus', [[20, 78], [40, 60], [48, 52], [56, 46], [44, 46], [84, 20], [72, 10], [24, 26]], [[0, 1], [1, 2], [2, 3], [2, 4], [3, 5], [4, 6]]],
+    ['♊', '雙子座', 'Gemini', [[30, 12], [48, 10], [28, 40], [47, 40], [24, 66], [50, 66], [16, 88], [58, 88]], [[0, 2], [2, 4], [4, 6], [1, 3], [3, 5], [5, 7], [2, 3]]],
+    ['♋', '巨蟹座', 'Cancer', [[50, 50], [50, 16], [28, 82], [74, 84], [56, 40]], [[0, 4], [4, 1], [0, 2], [0, 3]]],
+    ['♌', '獅子座', 'Leo', [[28, 74], [30, 58], [40, 46], [38, 32], [30, 24], [20, 28], [64, 62], [88, 66], [70, 46]], [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [0, 6], [6, 7], [7, 8], [8, 2], [6, 8]]],
+    ['♍', '處女座', 'Virgo', [[56, 88], [46, 66], [48, 48], [60, 40], [70, 26], [34, 48], [18, 44], [64, 62]], [[6, 5], [5, 2], [2, 3], [3, 4], [2, 1], [1, 0], [3, 7], [7, 0]]],
+    ['♎', '天秤座', 'Libra', [[52, 20], [30, 46], [72, 44], [30, 76], [72, 70], [80, 82]], [[0, 1], [0, 2], [1, 2], [1, 3], [2, 4], [4, 5]]],
+    ['♏', '天蠍座', 'Scorpius', [[26, 16], [24, 28], [22, 40], [32, 32], [38, 40], [43, 48], [46, 58], [47, 68], [50, 78], [58, 86], [70, 87], [79, 80], [77, 71], [70, 68]], [[0, 1], [1, 2], [1, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 12], [12, 13]]],
+    ['♐', '射手座', 'Sagittarius', [[22, 64], [36, 56], [32, 74], [46, 40], [54, 54], [64, 50], [68, 62], [52, 68]], [[0, 1], [0, 2], [1, 3], [3, 4], [1, 4], [4, 7], [7, 2], [2, 1], [4, 5], [5, 6], [6, 7]]],
+    ['♑', '摩羯座', 'Capricornus', [[18, 30], [30, 42], [44, 70], [60, 72], [80, 56], [86, 34], [66, 42], [46, 40]], [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0]]],
+    ['♒', '水瓶座', 'Aquarius', [[14, 26], [30, 30], [46, 20], [56, 34], [52, 50], [40, 60], [56, 70], [46, 82], [62, 86], [74, 76]], [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9]]],
+    ['♓', '雙魚座', 'Pisces', [[44, 86], [34, 62], [26, 40], [20, 22], [14, 12], [26, 10], [64, 74], [82, 64], [88, 52], [96, 58], [92, 68]], [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 3], [0, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 7]]]
+  ];
+  const ZODIAC_MS = 15000;
+  let zi = Math.floor(Math.random() * 12);
+  function drawZodiac() {
+    const [sym, zh, en, pts, lines] = ZODIAC[zi % 12];
+    const svgNS = 'http://www.w3.org/2000/svg', svg = $('zodiacSvg');
+    svg.textContent = '';
+    lines.forEach(([a, b], i) => {
+      const l = document.createElementNS(svgNS, 'line');
+      l.setAttribute('x1', pts[a][0]); l.setAttribute('y1', pts[a][1]);
+      l.setAttribute('x2', pts[b][0]); l.setAttribute('y2', pts[b][1]);
+      l.setAttribute('pathLength', 1);
+      l.style.animationDelay = (0.6 + i * 0.25) + 's';
+      svg.append(l);
+    });
+    pts.forEach(([x, y], i) => {
+      const c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', i % 3 ? 1.4 : 2);
+      c.style.animationDelay = (i * 0.12) + 's, ' + (-Math.random() * 4) + 's';
+      svg.append(c);
+    });
+    $('zodiacName').textContent = `${sym}︎${zh} · ${en}`;
+    $('zodiac').classList.remove('out');
+  }
+  drawZodiac();
+  setInterval(() => {
+    if (S.theme !== 5 || S.paused) return;
+    $('zodiac').classList.add('out');
+    setTimeout(() => { zi++; drawZodiac(); }, 1600);
+  }, ZODIAC_MS);
+
   // 隨風飄落的花瓣
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const box = $('petals'), n = innerWidth < 650 ? 10 : 18;
@@ -365,7 +410,7 @@
     currentMessage: () => { const l = messages(); return l.length ? l[S.mi % l.length] : null; }
   };
 
-  setTheme(0);
+  setTheme(5);  // 預設：夜幕・十二星座
   setConnected(DEMO);
   load().then(subscribe);
   setInterval(tick, 200);

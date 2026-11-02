@@ -16,7 +16,9 @@ main[data-theme="5"]{--bg:#0a0c1b;--card:#151a30;--ink:#eceaf6;--muted:#a3a5c2;-
 .scene-photo,.scene-light,.petals{transition:opacity 1.8s}
 main[data-theme="3"] :is(.scene-photo,.scene-light,.petals),
 main[data-theme="4"] :is(.scene-photo,.scene-light,.petals),
-main[data-theme="5"] :is(.scene-photo,.scene-light,.petals){opacity:0}
+main[data-theme="5"] :is(.scene-photo,.scene-light){opacity:0}
+/* 夜幕保留隨風飄落的花瓣，化成淡淡的光點 */
+main[data-theme="5"] .petals{opacity:.55;filter:drop-shadow(0 0 4px #fff6d0)}
 .scene .layer{position:absolute;inset:0;opacity:0;transition:opacity 1.8s;overflow:hidden}
 .scene .layer *{animation-play-state:paused!important}
 main[data-theme="3"] .scene-ocean,main[data-theme="4"] .scene-mist,main[data-theme="5"] .scene-night{opacity:1}
@@ -60,6 +62,22 @@ main[data-theme="3"] .scene-ocean *,main[data-theme="4"] .scene-mist *,main[data
 .moon:after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 65% 60%,#00000014 0 10%,transparent 11%),radial-gradient(circle at 40% 70%,#00000010 0 7%,transparent 8%),radial-gradient(circle at 55% 30%,#0000000d 0 6%,transparent 7%)}
 .shooting{position:absolute;top:12%;left:20%;width:160px;height:2px;border-radius:2px;background:linear-gradient(90deg,#ffffff,#ffffff00);opacity:0;transform:rotate(-20deg);animation:shoot 9s ease-in 3s infinite}
 .night-hills{height:24%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 400' preserveAspectRatio='none'%3E%3Cpath d='M0 220 C200 140 380 200 560 150 C760 95 900 210 1100 160 C1280 115 1420 190 1600 140 V400 H0Z' fill='%23070818'/%3E%3C/svg%3E")}
+/* 十二星座 */
+.zodiac{position:absolute;z-index:3;top:6%;left:36%;width:min(19vw,300px);transition:opacity 1.5s}
+.zodiac.out{opacity:0}
+.zodiac-sway{display:flex;flex-direction:column-reverse;transform-origin:50% 100%;animation:zodiacSway 11s ease-in-out infinite alternate}
+.zodiac svg{display:block;width:100%;height:auto;overflow:visible}
+.zodiac line{stroke:#e4e0ff;stroke-width:.6;stroke-linecap:round;opacity:.8;stroke-dasharray:1;stroke-dashoffset:1;animation:zDraw 1.4s ease-out forwards}
+.zodiac circle{fill:#fff;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 3px #c5bcff);opacity:0;animation:zStar .8s ease-out forwards,zTwinkle 4s ease-in-out infinite alternate}
+.zodiac p{margin:0 0 8px;text-align:center;font-size:clamp(13px,1.5vw,18px);letter-spacing:4px;color:#eeebff;opacity:.9;text-shadow:0 0 10px #c5bcff88}
+@keyframes zDraw{to{stroke-dashoffset:0}}
+@keyframes zStar{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+@keyframes zTwinkle{from{fill-opacity:.65}to{fill-opacity:1}}
+@keyframes zodiacSway{
+  0%{transform:translate(-1.2%,0) rotate(-1.6deg)}
+  50%{transform:translate(.6%,-1.5%) rotate(.6deg)}
+  100%{transform:translate(1.4%,.5%) rotate(1.8deg)}
+}
 @keyframes twinkle{from{opacity:.25;transform:scale(.7)}to{opacity:1;transform:scale(1.15)}}
 @keyframes moonGlow{from{box-shadow:0 0 30px 8px #f6eccb33,0 0 100px 30px #c5bcff1a}to{box-shadow:0 0 50px 16px #f6eccb55,0 0 140px 50px #c5bcff2a}}
 @keyframes shoot{0%{opacity:0;transform:translate(0,0) rotate(-20deg)}2%{opacity:1}10%{opacity:0;transform:translate(420px,160px) rotate(-20deg)}100%{opacity:0;transform:translate(420px,160px) rotate(-20deg)}}
@@ -69,4 +87,4 @@ main[data-theme="3"] .scene-ocean *,main[data-theme="4"] .scene-mist *,main[data
 [data-theme="4"] .empty-art{background:linear-gradient(135deg,#dde5df,#f5f6f2)}
 [data-theme="5"] .empty-art{background:radial-gradient(ellipse at 50% 40%,#2b2560,#0d1030)}
 
-@media(max-width:650px){.moon{width:64px;height:64px}.scene-ocean .sun{width:110px;height:110px;margin:-55px}}
+@media(max-width:650px){.zodiac{left:auto;right:4%;top:auto;bottom:6%;width:46vw;opacity:.8}.moon{width:64px;height:64px}.scene-ocean .sun{width:110px;height:110px;margin:-55px}}
