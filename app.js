@@ -27,7 +27,7 @@
   const publicUrl = path => path ? db.storage.from(BUCKET).getPublicUrl(path).data.publicUrl : null;
   function normalize(row) {
     const url = publicUrl(row.photo);
-    return { id: row.id, name: row.name || '匿名同學', message: row.message || '', photo_url: url, thumb_url: publicUrl(row.thumb) || url, created: new Date(row.created_at || Date.now()).getTime() };
+    return { id: row.id, name: row.name || '匿名同學', message: row.message || '', photo: row.photo || null, thumb: row.thumb || null, photo_url: url, thumb_url: publicUrl(row.thumb) || url, created: new Date(row.created_at || Date.now()).getTime() };
   }
 
   // ---------- data ----------
@@ -49,15 +49,26 @@
     if (post.photo_url) spotlight(post, own); else renderAll();
   }
 
+  function replacePost(post) {
+    const i = S.posts.findIndex(p => p.id === post.id);
+    if (i < 0 || HIDDEN.has(post.id)) return;
+    S.posts[i] = post;
+    if (S.selected && S.selected.id === post.id) S.selected = post.photo_url ? post : null;
+    S.stripKey = ''; $('mainPhoto').dataset.id = '';
+    renderAll();
+  }
+  function removePost(id) {
+    S.posts = S.posts.filter(p => p.id !== id);
+    if (S.selected && S.selected.id === id) S.selected = null;
+    renderAll();
+  }
+
   function subscribe() {
     if (DEMO) return;
     db.channel('posts-live')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, ({ new: row }) => addPost(normalize(row)))
-      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'posts' }, ({ old }) => {
-        S.posts = S.posts.filter(p => p.id !== old.id);
-        if (S.selected && S.selected.id === old.id) S.selected = null;
-        renderAll();
-      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'posts' }, ({ new: row }) => replacePost(normalize(row)))
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'posts' }, ({ old }) => removePost(old.id))
       .subscribe(status => {
         if (status === 'SUBSCRIBED') setConnected(true);
         else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') setConnected(false);
@@ -142,9 +153,9 @@
   function renderMessage() {
     const list = messages(), box = $('msgContent');
     if (!list.length) return;
-    const m = list[S.mi % list.length];
-    if (box.dataset.id === m.id) { $('msgCount').textContent = `${S.mi % list.length + 1} / ${list.length} 則祝福`; return; }
-    box.dataset.id = m.id;
+    const m = list[S.mi % list.length], key = m.id + '|' + m.name + '|' + m.message;
+    if (box.dataset.id === key) { $('msgCount').textContent = `${S.mi % list.length + 1} / ${list.length} 則祝福`; return; }
+    box.dataset.id = key;
     box.textContent = '';
     const p = document.createElement('p'); p.textContent = m.message;
     const author = document.createElement('span'); author.className = 'author';
@@ -333,6 +344,13 @@
       box.append(p);
     }
   }
+
+  // 給 admin.js 使用
+  window.GW = {
+    db, BUCKET, DEMO, HIDDEN, normalize, toast, replacePost, removePost,
+    currentPhoto: () => current(),
+    currentMessage: () => { const l = messages(); return l.length ? l[S.mi % l.length] : null; }
+  };
 
   setTheme(0);
   setConnected(DEMO);

@@ -6,8 +6,8 @@
 <title>畢業光影｜輔仁大學統計資訊學系／碩士班／碩士專班</title>
 <meta name="description" content="把此刻留給未來。畢業照片與祝福即時牆。">
 <link rel="icon" href="sis-badge.webp" type="image/webp">
-<link rel="stylesheet" href="style.css?v=6">
-<link rel="stylesheet" href="extra.css?v=6">
+<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="extra.css?v=7">
 </head>
 <body>
 <main data-theme="0" id="app">
@@ -46,7 +46,7 @@
      <button class="outline" data-open-upload><svg class="ic"><use href="#i-img"/></svg>上傳第一張照片</button>
     </div>
     <div class="photo-caption hidden" id="caption"><span><b id="capName"></b><small id="capMsg"></small></span><span id="capInfo"></span></div>
-    <div class="stage-top"><span class="pill" id="pill">回憶放映中</span><button class="icon-button" id="pauseBtn" aria-label="暫停輪播"><svg class="ic"><use href="#i-pause"/></svg></button></div>
+    <div class="stage-top"><span class="pill" id="pill">回憶放映中</span><span class="stage-actions"><button class="adm-btn admin-only" id="admEditPhoto">✎ 編輯這張</button><button class="adm-btn danger admin-only" id="admDelPhoto">🗑 刪除這張</button><button class="icon-button" id="pauseBtn" aria-label="暫停輪播"><svg class="ic"><use href="#i-pause"/></svg></button></span></div>
     <div class="progress"><i id="bar"></i></div>
    </div>
    <div class="strip" id="strip"><p>你的每一張照片，都會成為這段青春的一部分。</p></div>
@@ -61,6 +61,7 @@
      <span class="author"><span>輔</span><b>畢業祝福<small>寫下你的第一則留言</small></b></span>
     </div>
     <div class="message-bottom"><span id="msgCount">等待你的祝福</span><span id="msgDots">● ○ ○</span></div>
+    <div class="msg-admin admin-only"><button class="adm-btn" id="admEditMsg">✎ 編輯這則</button><button class="adm-btn danger" id="admDelMsg">🗑 刪除這則</button></div>
    </div>
    <div class="join-card">
     <div class="join-symbol"><svg class="ic" style="width:26px;height:26px"><use href="#i-cam"/></svg><svg class="ic" style="width:15px;height:15px"><use href="#i-spark"/></svg></div>
@@ -80,8 +81,55 @@
    <button data-theme-btn="1"><i></i>青春活潑</button>
    <button data-theme-btn="2"><i></i>星空光影</button>
    <button id="autoThemeBtn" class="chosen">↻ 自動輪替</button>
+   <button class="admin-link" id="adminLink" title="管理模式">🔒 管理</button>
   </div>
  </footer>
+
+ <div class="admin-bar hidden" id="adminBar">
+  <span>🔓 管理模式 · <b id="adminEmail"></b></span>
+  <span><button id="adminListBtn">全部貼文</button><button id="adminLogout">登出</button></span>
+ </div>
+
+ <div class="overlay hidden" id="loginOverlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-label="管理者登入">
+   <button class="close" data-close aria-label="關閉">✕</button>
+   <p class="eyebrow">ADMIN</p>
+   <h2>管理者登入</h2>
+   <p>登入後可在網頁上直接修改或刪除照片與留言。</p>
+   <form id="loginForm">
+    <label>Email<input name="email" type="email" autocomplete="username" required></label>
+    <label>密碼<input name="password" type="password" autocomplete="current-password" required></label>
+    <p class="error hidden" role="alert" id="loginError"></p>
+    <button class="primary submit" id="loginBtn"><span>登入</span></button>
+   </form>
+  </section>
+ </div>
+
+ <div class="overlay hidden" id="listOverlay">
+  <section class="modal wide" role="dialog" aria-modal="true" aria-label="全部貼文">
+   <button class="close" data-close aria-label="關閉">✕</button>
+   <p class="eyebrow">ADMIN</p>
+   <h2>全部貼文 <small id="listCount"></small></h2>
+   <div class="adm-list" id="admList"></div>
+  </section>
+ </div>
+
+ <div class="overlay hidden" id="editOverlay">
+  <section class="modal" role="dialog" aria-modal="true" aria-label="編輯貼文">
+   <button class="close" data-close aria-label="關閉">✕</button>
+   <p class="eyebrow">ADMIN</p>
+   <h2>編輯貼文</h2>
+   <form id="editForm">
+    <img id="editPhoto" class="edit-photo hidden" alt="">
+    <label class="check hidden" id="editRemoveWrap"><input type="checkbox" id="editRemovePhoto"> 移除這張照片（保留留言）</label>
+    <label>姓名／暱稱<input name="name" maxlength="30" required></label>
+    <label>留言<textarea name="message" maxlength="300" rows="4"></textarea></label>
+    <p class="error hidden" role="alert" id="editError"></p>
+    <button class="primary submit" id="editSave"><span>儲存修改</span></button>
+    <button type="button" class="copy danger-text" id="editDelete">刪除整則貼文（含照片）</button>
+   </form>
+  </section>
+ </div>
 
  <div class="toast hidden" role="status" id="toast"><span id="toastText"></span><button aria-label="關閉通知" id="toastClose">✕</button></div>
 
@@ -123,7 +171,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="config.js?v=6"></script>
-<script src="app.js?v=6"></script>
+<script src="config.js?v=7"></script>
+<script src="app.js?v=7"></script>
+<script src="admin.js?v=7"></script>
 </body>
 </html>

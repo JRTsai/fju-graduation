@@ -14,6 +14,38 @@
 .demo-banner{position:relative;margin-top:12px;padding:10px 14px;border:1px dashed var(--accent);border-radius:6px;font-size:12px;color:var(--muted);background:var(--card)}
 .thumb{cursor:pointer}
 
+/* 管理模式 */
+.admin-only{display:none!important}
+.is-admin .admin-only{display:inline-flex!important}
+.is-admin .msg-admin.admin-only{display:flex!important}
+.stage-actions{display:flex;gap:6px;align-items:center}
+.adm-btn{border:0;border-radius:16px;padding:6px 11px;font-size:11px;background:#ffffffd9;color:#2f3a33;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 8px #0002}
+.adm-btn.danger{background:#c9524a;color:#fff}
+.msg-admin{gap:8px;margin-top:12px;justify-content:flex-end}
+.msg-admin .adm-btn{background:var(--soft);color:var(--ink);box-shadow:none;border:1px solid var(--border)}
+.msg-admin .adm-btn.danger{background:#c9524a;color:#fff;border-color:#c9524a}
+.admin-link{opacity:.55}
+.admin-link:hover{opacity:1}
+.admin-bar{position:fixed;top:0;left:0;right:0;z-index:15;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 5vw;background:#c9524a;color:#fff;font-size:12px;box-shadow:0 2px 10px #0003}
+.admin-bar button{border:1px solid #ffffff88;background:transparent;color:#fff;border-radius:14px;padding:4px 11px;font-size:11px;margin-left:6px}
+.is-admin header{margin-top:36px}
+.modal.wide{width:720px}
+.modal h2 small{font-size:13px;color:var(--muted)}
+.adm-list{margin-top:14px;max-height:65vh;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.adm-item{display:flex;gap:12px;align-items:center;padding:9px;border:1px solid var(--border);border-radius:8px;background:var(--bg)}
+.adm-item img,.adm-noimg{width:64px;height:48px;object-fit:cover;border-radius:5px;flex-shrink:0;background:var(--soft);display:grid;place-items:center;font-size:20px}
+.adm-text{flex:1;min-width:0}
+.adm-text b{font-size:13px}
+.adm-text small{margin-left:8px;font-size:10px;color:var(--muted)}
+.adm-text p{margin:4px 0 0;font-size:12px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm-acts{display:flex;gap:6px;flex-shrink:0}
+.adm-item .adm-btn{box-shadow:none;border:1px solid var(--border);background:var(--card);color:var(--ink)}
+.adm-item .adm-btn.danger{background:#c9524a;color:#fff;border-color:#c9524a}
+.edit-photo{display:block;max-width:100%;max-height:180px;margin:12px auto 0;border-radius:6px}
+form label.check{display:flex;align-items:center;gap:8px;font-size:12px;color:#c9524a}
+.danger-text{color:#c9524a!important;margin-top:12px}
+@media(max-width:650px){.adm-item{flex-wrap:wrap}.adm-acts{width:100%;justify-content:flex-end}.stage-actions .adm-btn{padding:5px 8px;font-size:10px}}
+
 /* 系徽與系名 */
 .brand{font-size:17px;gap:14px}
 .brandmark.badge{width:58px;height:58px;padding:0;border:0;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px #d9a44166,0 4px 14px #0003;background:#1e1e1e}
