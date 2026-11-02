@@ -7,6 +7,8 @@
   const IDLE_MS = 10000;   // 點選／新上傳照片停留 10 秒後回到輪播
   const THEME_MS = 30000;  // 風格輪替
   const POLL_MS = 15000;   // 即時連線之外的備援重新整理
+  // 不在網頁上顯示的貼文（上線前的連線測試資料）
+  const HIDDEN = new Set(['79b58884-2563-47ef-929e-665c0164eb4e', '6298f54f-9e7b-4758-8d62-3c3c5ffdb464']);
 
   const db = DEMO ? null : window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
   const $ = id => document.getElementById(id);
@@ -34,7 +36,7 @@
     const { data, error } = await db.from('posts').select('*').order('created_at', { ascending: false }).limit(2000);
     if (error) return setConnected(false);
     const known = new Set(S.posts.map(p => p.id));
-    const next = data.map(normalize);
+    const next = data.filter(r => !HIDDEN.has(r.id)).map(normalize);
     const fresh = S.posts.length ? next.find(p => !known.has(p.id) && p.photo_url) : null;
     S.posts = next;
     setConnected(true);
@@ -42,7 +44,7 @@
   }
 
   function addPost(post, own) {
-    if (S.posts.some(p => p.id === post.id)) return;
+    if (HIDDEN.has(post.id) || S.posts.some(p => p.id === post.id)) return;
     S.posts.unshift(post);
     if (post.photo_url) spotlight(post, own); else renderAll();
   }
