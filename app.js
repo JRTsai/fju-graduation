@@ -6,6 +6,7 @@
   const MSG_MS = 7000;     // 留言輪播間隔
   const IDLE_MS = 10000;   // 點選／新上傳照片停留 10 秒後回到輪播
   const THEME_MS = 30000;  // 風格輪替
+  const THEME_COUNT = 6;   // 溫暖典雅、青春活潑、星空光影、海洋、山嵐、夜幕
   const POLL_MS = 15000;   // 即時連線之外的備援重新整理
   // 不在網頁上顯示的貼文（上線前的連線測試資料）
   const HIDDEN = new Set(['79b58884-2563-47ef-929e-665c0164eb4e', '6298f54f-9e7b-4758-8d62-3c3c5ffdb464']);
@@ -187,7 +188,7 @@
       if (el >= PHOTO_MS && photos().length) { S.index = (S.index + 1) % photos().length; S.photoStart = now; renderStage(); }
     }
     if (!S.paused && now - S.msgStart >= MSG_MS) { S.mi++; S.msgStart = now; renderMessage(); }
-    if (S.autoTheme && !S.paused && now - S.themeStart >= THEME_MS) { setTheme((S.theme + 1) % 3); S.themeStart = now; }
+    if (S.autoTheme && !S.paused && now - S.themeStart >= THEME_MS) { setTheme((S.theme + 1) % THEME_COUNT); S.themeStart = now; }
   }
 
   // ---------- upload ----------
@@ -330,6 +331,17 @@
     note.className = 'demo-banner';
     note.textContent = '示範模式：尚未設定 Supabase（config.js），上傳內容只會暫存在這個分頁。設定完成後即可多人即時同步。';
     document.querySelector('.intro').after(note);
+  }
+
+  // 夜幕的星星
+  {
+    const sky = $('stars'), n = innerWidth < 650 ? 45 : 90;
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement('i');
+      const r = (a, b) => a + Math.random() * (b - a);
+      s.style.cssText = `left:${r(0, 100)}%;top:${Math.pow(Math.random(), 1.6) * 62}%;--z:${r(1, 2.6)}px;--tw:${r(2, 6)}s;--td:${r(-6, 0)}s`;
+      sky.append(s);
+    }
   }
 
   // 隨風飄落的花瓣
