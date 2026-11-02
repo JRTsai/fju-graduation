@@ -313,7 +313,8 @@
     else if (document.fullscreenElement) document.exitFullscreen?.();
   });
   document.querySelectorAll('[data-theme-btn]').forEach(b => b.addEventListener('click', () => {
-    setTheme(+b.dataset.themeBtn); S.autoTheme = false; $('autoThemeBtn').classList.remove('chosen');
+    // 點選氛圍只是跳到該氛圍，自動輪替照常進行（要固定請關閉「自動輪替」）
+    setTheme(+b.dataset.themeBtn); S.themeStart = Date.now();
   }));
   $('autoThemeBtn').addEventListener('click', () => {
     S.autoTheme = !S.autoTheme; S.themeStart = Date.now();
