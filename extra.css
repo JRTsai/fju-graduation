@@ -91,7 +91,7 @@ header,section,footer{z-index:1}
   color:var(--ink);background:linear-gradient(100deg,var(--ink) 0 38%,#ff5f6d 41%,#ffb347 44%,#ffe66d 47%,#6ee7a8 50%,#5ec8ff 53%,#8b7bff 56%,#e57bff 59%,var(--ink) 62% 100%);
   background-size:300% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   animation:rainbowSweep 16s ease-in-out infinite}
-.year-title:after{content:'2027毕业光影';position:absolute;inset:0;z-index:-1;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 0 18px #ffd77a,0 0 34px #b58cff;opacity:0;animation:rainbowGlow 16s ease-in-out infinite}
+.year-title:after{content:'2027畢業光影';position:absolute;inset:0;z-index:-1;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 0 18px #ffd77a,0 0 34px #b58cff;opacity:0;animation:rainbowGlow 16s ease-in-out infinite}
 @keyframes rainbowSweep{0%{background-position:100% 0}16%{background-position:0 0}100%{background-position:0 0}}
 @keyframes rainbowGlow{0%{opacity:0}6%{opacity:.85}14%{opacity:.6}20%,100%{opacity:0}}
 .screen .year-title{font-size:clamp(30px,3.6vw,54px)}
@@ -105,9 +105,9 @@ header,section,footer{z-index:1}
 .screen .title-row{margin-top:14px}
 @media(max-width:650px){.title-row{flex-direction:column;align-items:flex-start;gap:8px;margin-top:20px}.title-row h1{font-size:28px;justify-content:flex-start;text-align:left}}
 
-/* 草書標題（柳建毛草；畢業給來在草書中本就寫作毕业给来的字形） */
-.cursive{font-family:"Liu Jian Mao Cao",Georgia,"Noto Serif TC",serif!important;font-weight:400!important}
-.year-title.cursive{font-size:clamp(42px,5.4vw,76px);letter-spacing:4px;line-height:1.1}
-.title-row h1.cursive{font-size:clamp(36px,4.4vw,62px);letter-spacing:3px}
-.screen .year-title.cursive{font-size:clamp(38px,4.6vw,66px)}
-@media(max-width:650px){.year-title.cursive{font-size:44px;letter-spacing:2px}.title-row h1.cursive{font-size:36px}}
+/* 手寫體標題（Yomogi，支援繁體字） */
+.handwrite{font-family:"Yomogi",Georgia,"Noto Serif TC",serif!important;font-weight:400!important}
+.year-title.handwrite{font-size:clamp(42px,5.4vw,76px);letter-spacing:4px;line-height:1.1}
+.title-row h1.handwrite{font-size:clamp(36px,4.4vw,62px);letter-spacing:3px}
+.screen .year-title.handwrite{font-size:clamp(38px,4.6vw,66px)}
+@media(max-width:650px){.year-title.handwrite{font-size:44px;letter-spacing:2px}.title-row h1.handwrite{font-size:31px;letter-spacing:2px}}
