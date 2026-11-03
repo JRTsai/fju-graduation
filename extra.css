@@ -85,3 +85,15 @@ header,section,footer{z-index:1}
 .message-card{background:color-mix(in srgb,var(--card) 82%,transparent);backdrop-filter:blur(10px)}
 .join-card{background:color-mix(in srgb,var(--soft) 78%,transparent);backdrop-filter:blur(10px)}
 .stage{box-shadow:0 20px 50px #2a3a2a26}
+
+/* 2027畢業光影：每 16 秒掃過一次彩虹光影 */
+.year-title{position:relative;z-index:1;margin:26px 0 0;font-family:Georgia,"Noto Serif TC",serif;font-size:clamp(34px,4.6vw,64px);font-weight:700;letter-spacing:6px;line-height:1.15;
+  color:var(--ink);background:linear-gradient(100deg,var(--ink) 0 38%,#ff5f6d 41%,#ffb347 44%,#ffe66d 47%,#6ee7a8 50%,#5ec8ff 53%,#8b7bff 56%,#e57bff 59%,var(--ink) 62% 100%);
+  background-size:300% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:rainbowSweep 16s ease-in-out infinite}
+.year-title:after{content:'2027畢業光影';position:absolute;inset:0;z-index:-1;color:transparent;-webkit-text-fill-color:transparent;text-shadow:0 0 18px #ffd77a,0 0 34px #b58cff;opacity:0;animation:rainbowGlow 16s ease-in-out infinite}
+@keyframes rainbowSweep{0%{background-position:100% 0}16%{background-position:0 0}100%{background-position:0 0}}
+@keyframes rainbowGlow{0%{opacity:0}6%{opacity:.85}14%{opacity:.6}20%,100%{opacity:0}}
+.screen .year-title{margin-top:14px;font-size:clamp(30px,3.6vw,54px)}
+@media(max-width:650px){.year-title{margin-top:20px;letter-spacing:3px}}
+@media(prefers-reduced-motion:reduce){.year-title,.year-title:after{animation:none}}
